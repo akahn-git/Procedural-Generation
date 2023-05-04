@@ -1,0 +1,76 @@
+//Model Sources
+
+// Earth Hill 
+
+"low-poly model of a Deer from the "Taiga" set" (https://skfb.ly/o9PAH) by 616 is licensed under Creative Commons Attribution (http://creativecommons.org/licenses/by/4.0/).
+"Giant Low Poly Tree" (https://skfb.ly/6tuTE) by Sahir Virmani is licensed under Creative Commons Attribution (http://creativecommons.org/licenses/by/4.0/).
+
+// Earth Mountain
+
+"Low poly Cliff" (https://skfb.ly/6WWZQ) by Anskar is licensed under Creative Commons Attribution (http://creativecommons.org/licenses/by/4.0/).
+"Pine Tree low poly" (https://skfb.ly/owtR8) by daniel.2U is licensed under Creative Commons Attribution (http://creativecommons.org/licenses/by/4.0/).
+
+// Earth Ocean
+
+"Low-Poly Sailboat" (https://skfb.ly/6XzYT) by Kenepin is licensed under Creative Commons Attribution (http://creativecommons.org/licenses/by/4.0/).
+"FREE LOW POLY PALM TREE" (https://skfb.ly/ozFCP) by juansan0 is licensed under Creative Commons Attribution (http://creativecommons.org/licenses/by/4.0/).
+
+// Earth Plain
+
+"Low Poly Flowers" (https://skfb.ly/6YBWw) by InnocentBaraka is licensed under Creative Commons Attribution (http://creativecommons.org/licenses/by/4.0/).
+
+// Fire Hill
+
+"Low Poly Fox" (https://skfb.ly/6GIrP) by AlienDev is licensed under Creative Commons Attribution (http://creativecommons.org/licenses/by/4.0/).
+"#reus_Low Poly Tree" (https://skfb.ly/6Ynpq) by Reus is licensed under Creative Commons Attribution (http://creativecommons.org/licenses/by/4.0/).
+
+// Fire Mountain
+
+"Low Poly Crystal" (https://skfb.ly/6RMO9) by Anskar is licensed under Creative Commons Attribution (http://creativecommons.org/licenses/by/4.0/).
+"Low Poly Dead Tree" (https://skfb.ly/6AxPZ) by dvnc.tech is licensed under Creative Commons Attribution (http://creativecommons.org/licenses/by/4.0/).
+
+// Fire Ocean 
+
+"Boat 3d low-poly" (https://skfb.ly/ooGX6) by shevchenkomr29 is licensed under Creative Commons Attribution (http://creativecommons.org/licenses/by/4.0/).
+"Death With Skythe" (https://skfb.ly/6y7yz) by CoobQ is licensed under Creative Commons Attribution (http://creativecommons.org/licenses/by/4.0/).
+
+// Fire Plain
+"Low-poly Succulent" (https://skfb.ly/6R8AC) by Alice Ursu is licensed under Creative Commons Attribution (http://creativecommons.org/licenses/by/4.0/).
+
+// Ice Hill
+
+"Low Poly Penguin" (https://skfb.ly/osK9L) by Mysticreator is licensed under Creative Commons Attribution (http://creativecommons.org/licenses/by/4.0/).
+"detachable Low Poly Tree" (https://skfb.ly/ooVzE) by KodiszYT is licensed under Creative Commons Attribution (http://creativecommons.org/licenses/by/4.0/).
+
+// Ice Mountain
+
+"Cristal" (https://skfb.ly/6SszA) by Jéssica Magno is licensed under CC Attribution-NonCommercial-NoDerivs (http://creativecommons.org/licenses/by-nc-nd/4.0/).
+"low-poly snow tree" (https://skfb.ly/6XoFp) by Jackmcm is licensed under Creative Commons Attribution (http://creativecommons.org/licenses/by/4.0/).
+
+// Ice Ocean
+
+"Starboard Bifurcation Buoy" (https://skfb.ly/6XrpC) by Replik8 Studios is licensed under Creative Commons Attribution (http://creativecommons.org/licenses/by/4.0/).
+"Snowman" (https://skfb.ly/6ztqR) by BlenderItUp is licensed under Creative Commons Attribution (http://creativecommons.org/licenses/by/4.0/).
+
+// Ice Plain
+
+"Lily Flower" (https://skfb.ly/6WVxZ) by Michelle.Q is licensed under Creative Commons Attribution (http://creativecommons.org/licenses/by/4.0/).
+"Igloo from Poly by Google" (https://skfb.ly/6YnBu) by IronEqual is licensed under Creative Commons Attribution (http://creativecommons.org/licenses/by/4.0/).
+
+// Water Hill
+
+"Low poly clown Fish" (https://skfb.ly/6ZxyJ) by SandW is licensed under Creative Commons Attribution (http://creativecommons.org/licenses/by/4.0/).
+"blue mashroom" (https://skfb.ly/o8p7T) by samiwaiba2001 is licensed under Creative Commons Attribution (http://creativecommons.org/licenses/by/4.0/).
+
+// Water Mountain
+
+"Coral" (https://skfb.ly/osxoA) by Yiğit Uslu is licensed under Creative Commons Attribution (http://creativecommons.org/licenses/by/4.0/).
+
+// Water Ocean
+
+"Treasure chest" (https://skfb.ly/oDoX7) by rizasub is licensed under Creative Commons Attribution (http://creativecommons.org/licenses/by/4.0/).
+"Red Submarine" (https://skfb.ly/oEPIG) by John6Tar is licensed under Creative Commons Attribution (http://creativecommons.org/licenses/by/4.0/).
+
+// Water Plain
+
+"Shells" (https://skfb.ly/6SvyA) by rkuhlf is licensed under Creative Commons Attribution (http://creativecommons.org/licenses/by/4.0/).
