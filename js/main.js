@@ -26,6 +26,7 @@ const api = {
     xCord: 0, 
     zCord: 0, 
     yCord: 100,
+    zoomLevel: 0,
     PlaneSpeed: 5, 
     RenderDistance: 0, 
     ChunkMin: 0, 
@@ -74,7 +75,7 @@ function init() {
 
     // top down camera
     camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 1000);
-    camera.position.set(0, 1000, 0);
+    camera.position.set(0, 500, 0);
     camera.rotation.order = 'YXZ';
     camera.rotation.y = -Math.PI / 2;
     camera.rotation.x = -Math.PI / 2;
@@ -196,7 +197,7 @@ function createGUI() {
         chunks = CHUNK_MANAGER.destroyAllChunks(scene, chunks,api);
         chunks = CHUNK_MANAGER.initializeChunks(world,scene,api,glbLoader);
         PLANE.setPlaneLocation(0,100,0,activePlane);
-        camera.position.set(0, 1000, 0);
+        camera.position.set(0, 500, 0);
         camera.rotation.y = -Math.PI / 2;
         camera.rotation.x = -Math.PI / 2;
         freeCamera.position.set(50, 50, 50);
@@ -244,7 +245,7 @@ function createGUI() {
         chunks = CHUNK_MANAGER.destroyAllChunks(scene, chunks, api);
         chunks = CHUNK_MANAGER.initializeChunks(world, scene, api, glbLoader);
         PLANE.setPlaneLocation(0,100,0,activePlane);
-        camera.position.set(0, 1000, 0);
+        camera.position.set(0,500, 0);
         camera.rotation.y = -Math.PI / 2;
         camera.rotation.x = -Math.PI / 2;
         freeCamera.position.set(50, 50, 50);
@@ -268,7 +269,7 @@ function createGUI() {
         chunks = CHUNK_MANAGER.destroyAllChunks(scene, chunks,api);
         chunks = CHUNK_MANAGER.initializeChunks(world, scene, api, glbLoader);
         PLANE.setPlaneLocation(0,100,0,activePlane);
-        camera.position.set(0, 1000, 0);
+        camera.position.set(0, 500, 0);
         camera.rotation.y = -Math.PI / 2;
         camera.rotation.x = -Math.PI / 2;
         freeCamera.position.set(50, 50, 50);
@@ -315,47 +316,77 @@ function mouseDown(event) {
     mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
 }
 
+function zoomIn() {
+    if(activeCamera == camera) {
+        camera.position.y -= 0.3;
+    }
+    else if(activeCamera == freeCamera) {
+        freeCamera.position.x += 0.1;
+        freeCamera.position.y -= 0.1;
+        freeCamera.position.z += 0.1;
+        freeControls.target.copy(activePlane.position);
+    }
+}
+
+function zoomOut() {
+    if(activeCamera == camera) {
+        camera.position.y += 0.3;
+    }
+    else if(activeCamera == freeCamera) {
+        freeCamera.position.x -= 0.1;
+        freeCamera.position.y += 0.1;
+        freeCamera.position.z -= 0.1;
+        freeControls.target.copy(activePlane.position);
+    }
+
+}
 
 // Key Press Functions
 
 function onDocumentKeyDown(event) {
-    if(event.keyCode == 87) {
+    if (event.keyCode == 87) { // Keycode for 'W'
         wKeyPressed = true;
     }
-    if(event.keyCode == 83) {
+    if (event.keyCode == 83) { // Keycode for 'S'
         sKeyPressed = true;
     }
-    if(event.keyCode == 65) {
+    if (event.keyCode == 65) { // Keycode for 'A'
         aKeyPressed = true;
     }
-    if(event.keyCode == 68) {
+    if (event.keyCode == 68) { // Keycode for 'D'
         dKeyPressed = true;
     }
-    if(event.keyCode == 32) {
+    if (event.keyCode == 32) { // Keycode for Spacebar
         spaceKeyPressed = true;
     }
-    if(event.keyCode == 16) {
+    if (event.keyCode == 16) { // Keycode for Shift
         shiftKeyPressed = true;
+    }
+    if (event.keyCode == 187) { // Keycode for '+'
+        zoomIn();
+    }
+    if (event.keyCode == 189) { // Keycode for '-'
+        zoomOut();
     }
 }
 
 function onDocumentKeyUp(event) {
-    if(event.keyCode == 87) {
+    if (event.keyCode == 87) { // Keycode for 'W'
         wKeyPressed = false;
     }
-    if(event.keyCode == 83) {
+    if (event.keyCode == 83) { // Keycode for 'S'
         sKeyPressed = false;
     }
-    if(event.keyCode == 65) {
+    if (event.keyCode == 65) { // Keycode for 'A'
         aKeyPressed = false;
     }
-    if(event.keyCode == 68) {
+    if (event.keyCode == 68) { // Keycode for 'D'
         dKeyPressed = false;
     }
-    if(event.keyCode == 32) {
+    if (event.keyCode == 32) { // Keycode for Spacebar
         spaceKeyPressed = false;
     }
-    if(event.keyCode == 16) {
+    if (event.keyCode == 16) { // Keycode for Shift
         shiftKeyPressed = false;
     }
 }
@@ -374,28 +405,24 @@ function animate() {
         upUpdate = PLANE.movePlaneForward(world, camera, freeCamera, freeControls, api, activePlane);
         if(upUpdate) {
             chunks = CHUNK_MANAGER.loadTopRow(world, scene, api, chunks,glbLoader);
-            //lastXID = api.ChunkXID;
         }
     }
     if(sKeyPressed) {
         downUpdate = PLANE.movePlaneBackward(world, camera, freeCamera, freeControls, api, activePlane);
         if(downUpdate) {
             chunks = CHUNK_MANAGER.loadBottomRow(world, scene, api, chunks,glbLoader);
-            //lastXID = api.ChunkXID;
         }
     }
     if(aKeyPressed) {
         leftUpdate = PLANE. movePlaneLeft(world, camera, freeCamera, freeControls, api, activePlane);
         if(leftUpdate) {
             chunks = CHUNK_MANAGER.loadLeftColumn(world, scene, api, chunks,glbLoader);
-            //lastZID = api.ChunkZID;
         }
     }
     if(dKeyPressed) {
         rightUpdate = PLANE.movePlaneRight(world, camera, freeCamera, freeControls, api, activePlane);
         if(rightUpdate) {
             chunks = CHUNK_MANAGER.loadRightColumn(world, scene, api, chunks,glbLoader);
-            //lastZID = api.ChunkZID;
         }
     }
     if(spaceKeyPressed) {

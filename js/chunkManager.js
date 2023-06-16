@@ -10,37 +10,74 @@ import * as PROPS from './props.js';
 //let columns = 2*renderDistance + 1;
 
 let centerZ, centerX;
-let chunk, groundTerrain, groundGeometry, groundMaterial;
+let groundTerrain, groundGeometry, groundMaterial;
 
+//experimental async chunk generation
+/*
 export function initializeChunks(world,scene,api,glbLoader) {
-    let chunks = [];
 
-    //console.log("Initializing Chunks render distance: "+ api.renderDistance)
+    return new Promise((resolve) => {
 
-    centerX = world.x * api.renderDistance;
-    for(let i = 0; i < 2 * api.renderDistance + 1; i++) {
-        let row = [];
-        centerZ = -world.z * api.renderDistance;
-        for(let j = 0; j < 2 * api.renderDistance + 1; j++) {
-            chunk = generateChunk(world, api, centerZ, centerX, api.Noise, api.Biome, api.Terrain, glbLoader,scene);
-            row.push(chunk);
-            centerZ += world.z;
-            scene.add(chunk);
+        let initialChunks = [];
 
-            if(i == api.renderDistance && j == api.renderDistance) {
-                api.ChunkNoise = chunk.noise;
-                api.ChunkBiome = chunk.biome;
-                api.ChunkTerrain = chunk.terrain;
-                api.ChunkMax = chunk.max;
-                api.ChunkMin = chunk.min;
-                api.ChunkAvg = chunk.avg;
+        for(let i = 0; i < 2 * api.renderDistance + 1; i++) {
+            initialChunks.push([]);
+        }
+
+        for(let i = 0; i < 2 * api.renderDistance + 1; i++) {
+            for(let j = 0; j < 2 * api.renderDistance + 1; j++) {
+                generateChunk(world, api, (api.renderDistance - i) * world.z, (j - api.renderDistance) * world.x, api.Noise, api.Biome, api.Terrain, glbLoader,scene).then((chunk) => {
+                    initialChunks[i][j] = chunk;
+                    scene.add(chunk);
+
+                    if(i == api.renderDistance && j == api.renderDistance) {
+                        api.ChunkNoise = chunk.noise;
+                        api.ChunkBiome = chunk.biome;
+                        api.ChunkTerrain = chunk.terrain;
+                        api.ChunkMax = chunk.max;
+                        api.ChunkMin = chunk.min;
+                        api.ChunkAvg = chunk.avg;
+                    }
+                });
             }
         }
-        chunks.push(row);
-        centerX -= world.x;
-    }
+        resolve(initialChunks);
+    });
+}
+*/
 
-    return chunks;
+
+export function initializeChunks(world,scene,api,glbLoader) {
+
+   
+        let initialChunks = [];
+        let chunk;
+        //console.log("Initializing Chunks render distance: "+ api.renderDistance)
+
+        centerX = world.x * api.renderDistance;
+        for(let i = 0; i < 2 * api.renderDistance + 1; i++) {
+            let row = [];
+            centerZ = -world.z * api.renderDistance;
+            for(let j = 0; j < 2 * api.renderDistance + 1; j++) {
+                chunk = generateChunk(world, api, centerZ, centerX, api.Noise, api.Biome, api.Terrain, glbLoader,scene)
+                    row.push(chunk);
+                    centerZ += world.z;
+                    scene.add(chunk);
+
+                    if(i == api.renderDistance && j == api.renderDistance) {
+                        api.ChunkNoise = chunk.noise;
+                        api.ChunkBiome = chunk.biome;
+                        api.ChunkTerrain = chunk.terrain;
+                        api.ChunkMax = chunk.max;
+                        api.ChunkMin = chunk.min;
+                        api.ChunkAvg = chunk.avg;
+                    }
+            }
+            initialChunks.push(row);
+            centerX -= world.x;
+        }
+        return(initialChunks);
+    
 }
 
 export function destroyAllChunks(scene, chunks, api){
@@ -65,73 +102,76 @@ export function destroyAllChunks(scene, chunks, api){
 
 export function generateChunk(world, api,centerZ, centerX, noise, biome, terrain, glbLoader,scene) {
 
-    groundTerrain = TERRAIN.getGroundTerrain(world,centerZ,centerX,terrain, noise);
-    groundGeometry = groundTerrain.groundGeometry;
-    groundMaterial = BIOME.getGroundMaterial(api,centerZ,centerX,biome,terrain, groundTerrain.min, groundTerrain.max);
-    chunk = new THREE.Mesh(groundGeometry, groundMaterial);
-    chunk.castShadow = true; //default is false
-    chunk.receiveShadow = true; //default  
-    chunk.rotation.order = 'YXZ';
-    chunk.rotation.y = -Math.PI / 2;
-    chunk.rotation.x = -Math.PI / 2;
-    chunk.position.x = centerX;
-    chunk.position.z = centerZ;
-    chunk.groundGeometry = groundGeometry;
-    chunk.groundMaterial = groundMaterial;
-    chunk.ZID = Math.trunc(centerZ / world.z);
-    chunk.XID = Math.trunc(centerX / world.x);
-    chunk.noise = noise;
-    chunk.min = groundTerrain.min;
-    chunk.max = groundTerrain.max;
-    chunk.avg = groundTerrain.avg;
-    chunk.noise = noise;
-
-    if(biome == "Random"){
-        let biomeNoise = MATH.improvedNoise(centerZ+0.7, 0, centerX+0.7);
-        let biomeNum = (Math.abs(biomeNoise) *10) % 4;
-        if(biomeNum < 1) {
-            chunk.biome = "Fire";
-        }
-        else if(biomeNum < 2) {
-            chunk.biome = "Ice";
-        }
-        else if(biomeNum < 3) {
-            chunk.biome = "Earth";
-        }
-        else if(biomeNum < 4) {
-            chunk.biome = "Water";
-        }
-    }
-    else{
-        chunk.biome = biome;
-    }
-
-    if(terrain == "Random"){
-        let noise = MATH.improvedNoise(centerZ+0.5, 0, centerX+0.5);
-        let terrainNum = (Math.abs(noise) *10) % 4;
-        if(terrainNum < 1){
-            chunk.terrain = "Mountain";
-        }
-        else if(terrainNum < 2){
-           chunk.terrain = "Hill";
-        }
-        else if(terrainNum < 3){
-            chunk.terrain = "Plain";
-        }
-        else if(terrainNum < 4){
-            chunk.terrain = "Ocean";
-        }
-    }
-    else{
-        chunk.terrain = terrain;
-    }
-
-    //Generate Props
-    if(noise =="Perlin"){
-        chunk.props = PROPS.generateProps(chunk, 0.8, 0.22, glbLoader, scene);
-    }
     
-    return chunk;
+        let chunk;
+        groundTerrain = TERRAIN.getGroundTerrain(world,centerZ,centerX,terrain, noise);
+        groundGeometry = groundTerrain.groundGeometry;
+        groundMaterial = BIOME.getGroundMaterial(api,centerZ,centerX,biome,terrain, groundTerrain.min, groundTerrain.max);
+        chunk = new THREE.Mesh(groundGeometry, groundMaterial);
+        chunk.castShadow = true; //default is false
+        chunk.receiveShadow = true; //default  
+        chunk.rotation.order = 'YXZ';
+        chunk.rotation.y = -Math.PI / 2;
+        chunk.rotation.x = -Math.PI / 2;
+        chunk.position.x = centerX;
+        chunk.position.z = centerZ;
+        chunk.groundGeometry = groundGeometry;
+        chunk.groundMaterial = groundMaterial;
+        chunk.ZID = Math.trunc(centerZ / world.z);
+        chunk.XID = Math.trunc(centerX / world.x);
+        chunk.noise = noise;
+        chunk.min = groundTerrain.min;
+        chunk.max = groundTerrain.max;
+        chunk.avg = groundTerrain.avg;
+        chunk.noise = noise;
+
+        if(biome == "Random"){
+            let biomeNoise = MATH.improvedNoise(centerZ+0.7, 0, centerX+0.7);
+            let biomeNum = (Math.abs(biomeNoise) *10) % 4;
+            if(biomeNum < 1) {
+                chunk.biome = "Fire";
+            }
+            else if(biomeNum < 2) {
+                chunk.biome = "Ice";
+            }
+            else if(biomeNum < 3) {
+                chunk.biome = "Earth";
+            }
+            else if(biomeNum < 4) {
+                chunk.biome = "Water";
+            }
+        }
+        else{
+            chunk.biome = biome;
+        }
+
+        if(terrain == "Random"){
+            let noise = MATH.improvedNoise(centerZ+0.5, 0, centerX+0.5);
+            let terrainNum = (Math.abs(noise) *10) % 4;
+            if(terrainNum < 1){
+                chunk.terrain = "Mountain";
+            }
+            else if(terrainNum < 2){
+            chunk.terrain = "Hill";
+            }
+            else if(terrainNum < 3){
+                chunk.terrain = "Plain";
+            }
+            else if(terrainNum < 4){
+                chunk.terrain = "Ocean";
+            }
+        }
+        else{
+            chunk.terrain = terrain;
+        }
+
+        //Generate Props
+        if(noise =="Perlin"){
+            chunk.props = PROPS.generateProps(chunk, 0.8, 0.22, glbLoader, scene);
+        }
+        
+        return (chunk);
+    
 }
 
 export function logChunks(chunks){
@@ -144,6 +184,7 @@ export function logChunks(chunks){
 
 export function loadLeftColumn(world, scene, api, chunks, glbLoader) {
     let tempChunks = [];
+    let chunk;
 
     for(let i = 0; i < 2 * api.renderDistance + 1; i++){
         let tempRow = [];
@@ -173,7 +214,7 @@ export function loadLeftColumn(world, scene, api, chunks, glbLoader) {
 export function loadRightColumn(world, scene, api, chunks, glbLoader) {
     let tempChunks = [];
     let tempRow;
-
+    let chunk;
     //console.log("Loading Right Column");
 
     for(let i = 0; i< 2 * api.renderDistance + 1; i++){
@@ -201,7 +242,7 @@ export function loadRightColumn(world, scene, api, chunks, glbLoader) {
 export function loadTopRow(world, scene, api, chunks, glbLoader) {
     let tempChunks = [];
     let row = [];
-
+    let chunk;
     //console.log("Loading Top Row");
 
     for(let i = 0; i< 2 * api.renderDistance + 1; i++){
@@ -230,7 +271,8 @@ export function loadTopRow(world, scene, api, chunks, glbLoader) {
 export function loadBottomRow(world, scene, api, chunks, glbLoader) {
     let tempChunks = [];
     let row = [];
-    
+    let chunk;
+
     for(let i = 0; i < 2 * api.renderDistance + 1; i++){
         chunk = generateChunk(world, api, chunks[2*api.renderDistance][i].position.z, chunks[2*api.renderDistance][i].position.x - world.x, api.Noise, api.Biome, api.Terrain, glbLoader,scene);
         row.push(chunk);
